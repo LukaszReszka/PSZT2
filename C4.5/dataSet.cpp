@@ -2,6 +2,7 @@
 #include <fstream>
 #include <sstream>
 #include <algorithm>
+#include <cmath>
 
 void DataSet::loadData(std::string file_name)
 {
@@ -27,6 +28,7 @@ void DataSet::loadData(std::string file_name)
 
     }
     file.close();
+    entropy = calculateEntropy(data[ALCOHOL_CONSUMP_ATTR]);
 }
 
 void DataSet::clearDataSet (void)
@@ -40,4 +42,16 @@ void DataSet::clearDataSet (void)
         j.clear();
     attributeVales.clear();
     attributeVales.resize(N_ATTRIBUTES);
+}
+
+double DataSet::calculateEntropy (std::vector<std::string> &alcohol_consum_tab)
+{
+    double entr = 0;
+    for (auto i: attributeVales[ALCOHOL_CONSUMP_ATTR])
+    {
+        int class_numb = std::count(alcohol_consum_tab.begin(), alcohol_consum_tab.end(), i);
+        double class_freq = (double) class_numb/alcohol_consum_tab.size();
+        entr -= class_freq*std::log(class_freq);
+    }
+    return entr;
 }
