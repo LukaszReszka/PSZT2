@@ -1,0 +1,15 @@
+# depslib dependency file v1.0
+1621943283 source:/home/lukasz/Pulpit/PSZT-projekt2/PSZT2/C4.5/main.cpp
+	<iostream>
+	"dataSet.h"
+
+1621939817 /home/lukasz/Pulpit/PSZT-projekt2/PSZT2/C4.5/dataSet.h
+	<vector>
+	<string>
+
+1621942026 source:/home/lukasz/Pulpit/PSZT-projekt2/PSZT2/C4.5/dataSet.cpp
+	"dataSet.h"
+	<fstream>
+	<sstream>
+	<algorithm>
+
