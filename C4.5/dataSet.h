@@ -17,9 +17,10 @@ public:
 //private:
     std::vector<std::vector <std::string>> data;
     std::vector<std::vector <std::string>> attributeVales;
-    double entropy = 0.0;
+    double setEntropy = 0.0;
 
     void clearDataSet (void);
     double calculateEntropy (std::vector<std::string> &alcohol_consum_tab);
+    double calculateInfGain(int attr_index);
 };
 #endif // DATASET_H_INCLUDED

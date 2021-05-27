@@ -28,7 +28,7 @@ void DataSet::loadData(std::string file_name)
 
     }
     file.close();
-    entropy = calculateEntropy(data[ALCOHOL_CONSUMP_ATTR]);
+    setEntropy = calculateEntropy(data[ALCOHOL_CONSUMP_ATTR]);
 }
 
 void DataSet::clearDataSet (void)
@@ -54,4 +54,22 @@ double DataSet::calculateEntropy (std::vector<std::string> &alcohol_consum_tab)
         entr -= class_freq*std::log(class_freq);
     }
     return entr;
+}
+
+double DataSet::calculateInfGain(int attr_index)
+{
+    std::vector<std::vector <std::string>> subsets_alco_consum;
+    int subsets_numb = attributeVales[attr_index].size();
+    subsets_alco_consum.resize(subsets_numb);
+    for (int i = 0; i < data[attr_index].size(); ++i)
+        for (int j = 0; j < subsets_numb; ++j)
+            if(data[attr_index][i] == attributeVales[attr_index][j])
+            {
+                subsets_alco_consum[j].push_back(data[ALCOHOL_CONSUMP_ATTR][i]);
+                break;
+            }
+    double result = setEntropy;
+    for (auto s: subsets_alco_consum)
+        result -= ((double) calculateEntropy(s)*s.size()/data[attr_index].size());
+    return result;
 }
