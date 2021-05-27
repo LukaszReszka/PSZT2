@@ -28,6 +28,7 @@ void DataSet::loadData(std::string file_name)
 
     }
     file.close();
+    ALCOHOL_CONSUMP_ATTR = data.size()-1;
     setEntropy = calculateEntropy(data[ALCOHOL_CONSUMP_ATTR]);
 }
 
@@ -72,4 +73,20 @@ double DataSet::calculateInfGain(int attr_index)
     for (auto s: subsets_alco_consum)
         result -= ((double) calculateEntropy(s)*s.size()/data[attr_index].size());
     return result;
+}
+
+int DataSet::maxInfGainAttribute(void)
+{
+    int chosen_attr = -1;
+    double currentInfGain = 0;
+    for (int i = 0; i < data.size()-1; ++i)
+    {
+        double InfGain = calculateInfGain(i);
+        if (InfGain == InfGain && InfGain > currentInfGain)
+        {
+            currentInfGain = InfGain;
+            chosen_attr = i;
+        }
+    }
+    return chosen_attr;
 }
