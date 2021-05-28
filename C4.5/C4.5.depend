@@ -4,11 +4,12 @@
 	"dataSet.h"
 	<cmath>
 
-1622211475 /home/lukasz/Pulpit/PSZT-projekt2/PSZT2/C4.5/dataSet.h
+1622227681 /home/lukasz/Pulpit/PSZT-projekt2/PSZT2/C4.5/dataSet.h
 	<vector>
 	<string>
+	<memory>
 
-1622211070 source:/home/lukasz/Pulpit/PSZT-projekt2/PSZT2/C4.5/dataSet.cpp
+1622227664 source:/home/lukasz/Pulpit/PSZT-projekt2/PSZT2/C4.5/dataSet.cpp
 	"dataSet.h"
 	<fstream>
 	<sstream>
