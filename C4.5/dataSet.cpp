@@ -47,26 +47,47 @@ void DataSet::clearDataSet (void)
 
 double DataSet::calculateEntropy (std::vector<std::string> &alcohol_consum_tab)
 {
-    double entr = 0;
+    double entr = 0.0;
     for (auto i: attributeVales[ALCOHOL_CONSUMP_ATTR])
     {
         int class_numb = std::count(alcohol_consum_tab.begin(), alcohol_consum_tab.end(), i);
-        double class_freq = (double) class_numb/alcohol_consum_tab.size();
-        entr -= class_freq*std::log(class_freq);
+        if (class_numb)
+        {
+            double class_freq = (double) class_numb/alcohol_consum_tab.size();
+            entr -= class_freq*std::log(class_freq);
+        }
+    }
+    return entr;
+}
+
+double DataSet::calculateEntropy (std::vector<std::string*> &alcohol_consum_tab)
+{
+    double entr = 0.0;
+    for (auto i: attributeVales[ALCOHOL_CONSUMP_ATTR])
+    {
+        int class_numb = 0;
+        for (int j = 0; j < alcohol_consum_tab.size(); ++j)
+            if (i == *alcohol_consum_tab[j]) ++class_numb;
+
+        if (class_numb)
+        {
+            double class_freq = (double) class_numb/alcohol_consum_tab.size();
+            entr -= class_freq*std::log(class_freq);
+        }
     }
     return entr;
 }
 
 double DataSet::calculateInfGain(int attr_index)
 {
-    std::vector<std::vector <std::string>> subsets_alco_consum;
+    std::vector<std::vector <std::string*>> subsets_alco_consum;
     int subsets_numb = attributeVales[attr_index].size();
     subsets_alco_consum.resize(subsets_numb);
     for (int i = 0; i < data[attr_index].size(); ++i)
         for (int j = 0; j < subsets_numb; ++j)
             if(data[attr_index][i] == attributeVales[attr_index][j])
             {
-                subsets_alco_consum[j].push_back(data[ALCOHOL_CONSUMP_ATTR][i]);
+                subsets_alco_consum[j].push_back(&data[ALCOHOL_CONSUMP_ATTR][i]);
                 break;
             }
     double result = setEntropy;
@@ -89,4 +110,25 @@ int DataSet::maxInfGainAttribute(void)
         }
     }
     return chosen_attr;
+}
+
+
+DataSet* DataSet::getSubSets(int attr_index)
+{
+    int subsets_numb = attributeVales[attr_index].size();
+    DataSet subsets [subsets_numb];
+    std::vector<std::vector<std::vector <std::string*>>> subsets_data;
+    subsets_data.resize(subsets_numb);
+    for (auto s: subsets_data)
+        s.resize(data.size());
+
+    for (int record_index = 0; record_index < data[attr_index].size(); ++record_index)
+        for (int subset_index = 0; subset_index < subsets_numb; ++subset_index)
+           if(data[attr_index][record_index] == attributeVales[attr_index][subset_index])
+            {
+                for (int record_attr_index = 0;  record_attr_index < data.size(); ++record_attr_index)
+                    subsets_data[subset_index][record_attr_index].push_back(&data[record_attr_index][record_index]);
+                break;
+            }
+
 }
