@@ -15,6 +15,7 @@ public:
     DataSet(void){}
     DataSet(std::string file_name) {loadData(file_name);}
     void loadData (std::string file_name);
+    void loadData (std::vector<std::vector<shared_p>> &set_data);
     int maxInfGainAttribute(void);
     DataSet* getSubSets(int attr_index);
 
@@ -24,7 +25,6 @@ public:
     double setEntropy = 0.0;
     int ALCOHOL_CONSUMP_ATTR;
 
-    void clearDataSet (void);
     double calculateEntropy (std::vector<shared_p> &alcohol_consum_tab);
     double calculateInfGain(int attr_index);
 };

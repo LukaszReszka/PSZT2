@@ -7,6 +7,6 @@ using namespace std;
 int main()
 {
     DataSet dane("student-mat.csv");
-    cout << dane.setEntropy;
+    dane.getSubSets(27);
     return 0;
 }

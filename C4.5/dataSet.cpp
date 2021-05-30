@@ -9,7 +9,8 @@ void DataSet::loadData(std::string file_name)
     std::fstream file;
     std::string value, temp, loop;
     int attr_numb = 0;
-    clearDataSet();
+    data.resize(N_ATTRIBUTES);
+    attributeVales.resize(N_ATTRIBUTES);
     file.open(file_name, std::ios::in);
     if (!file) exit(-1);
     getline(file, temp);
@@ -23,8 +24,6 @@ void DataSet::loadData(std::string file_name)
             {return *p == value;});     //lambda expression
             if(it == attributeVales[attr_numb].end())
                 attributeVales[attr_numb].push_back(shared_p(new std::string (value)));
-            //if(std::find(attributeVales[attr_numb].begin(), attributeVales[attr_numb].end(), value) == attributeVales[attr_numb].end())
-//                attributeVales[attr_numb].push_back(value);
 
             attr_numb = (attr_numb+1)%N_ATTRIBUTES;
         }
@@ -35,17 +34,22 @@ void DataSet::loadData(std::string file_name)
     setEntropy = calculateEntropy(data[ALCOHOL_CONSUMP_ATTR]);
 }
 
-void DataSet::clearDataSet (void)
+void DataSet::loadData (std::vector<std::vector<shared_p>> &set_data)
 {
-    for(auto i: data)
-        i.clear();
-    data.clear();
-    data.resize(N_ATTRIBUTES);
-
-    for(auto j: attributeVales)
-        j.clear();
-    attributeVales.clear();
-    attributeVales.resize(N_ATTRIBUTES);
+    int number_of_attributes = set_data.size();
+    data.resize(number_of_attributes);
+    attributeVales.resize(number_of_attributes);
+    for (int i = 0; i < number_of_attributes; ++i)
+    {
+        for(int j = 0; j < set_data[i].size(); ++j)
+        {
+            data[i].push_back(shared_p(set_data[i][j]));
+            auto it = std::find_if(attributeVales[i].begin(), attributeVales[i].end(), [&](shared_p const& p)
+            {return *p == *set_data[i][j];});     //lambda expression
+            if(it == attributeVales[i].end())
+                attributeVales[i].push_back(shared_p(set_data[i][j]));
+        }
+    }
 }
 
 double DataSet::calculateEntropy (std::vector<shared_p> &alcohol_consum_tab)
@@ -105,15 +109,19 @@ DataSet* DataSet::getSubSets(int attr_index)
     DataSet subsets [subsets_numb];
     std::vector<std::vector<std::vector <shared_p>>> subsets_data;
     subsets_data.resize(subsets_numb);
-    for (auto s: subsets_data)
-        s.resize(data.size());
+    for (int s = 0; s < subsets_numb; ++s)
+        subsets_data[s].resize(data.size());
 
     for (int record_index = 0; record_index < data[attr_index].size(); ++record_index)
         for (int subset_index = 0; subset_index < subsets_numb; ++subset_index)
-           if(data[attr_index][record_index] == attributeVales[attr_index][subset_index])
+           if(*data[attr_index][record_index] == *attributeVales[attr_index][subset_index])
             {
                 for (int record_attr_index = 0;  record_attr_index < data.size(); ++record_attr_index)
                     subsets_data[subset_index][record_attr_index].push_back(shared_p(data[record_attr_index][record_index]));
                 break;
             }
+
+    for (int i = 0; i < subsets_numb; ++i)
+        subsets[i].loadData(subsets_data[i]);
+    return subsets;
 }
