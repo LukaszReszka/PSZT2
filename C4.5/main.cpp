@@ -7,6 +7,8 @@ using namespace std;
 int main()
 {
     DataSet dane("student-mat.csv");
-    dane.getSubSets(27);
+    vector <DataSet> substets;
+    dane.getSubSets(27, substets);
+    cout << *substets[11].data[30][0];
     return 0;
 }

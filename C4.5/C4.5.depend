@@ -1,15 +1,15 @@
 # depslib dependency file v1.0
-1622406566 source:/home/lukasz/Pulpit/PSZT-projekt2/PSZT2/C4.5/main.cpp
+1622488839 source:/home/lukasz/Pulpit/PSZT-projekt2/PSZT2/C4.5/main.cpp
 	<iostream>
 	"dataSet.h"
 	<cmath>
 
-1622407510 /home/lukasz/Pulpit/PSZT-projekt2/PSZT2/C4.5/dataSet.h
+1622488654 /home/lukasz/Pulpit/PSZT-projekt2/PSZT2/C4.5/dataSet.h
 	<vector>
 	<string>
 	<memory>
 
-1622408912 source:/home/lukasz/Pulpit/PSZT-projekt2/PSZT2/C4.5/dataSet.cpp
+1622488122 source:/home/lukasz/Pulpit/PSZT-projekt2/PSZT2/C4.5/dataSet.cpp
 	"dataSet.h"
 	<fstream>
 	<sstream>

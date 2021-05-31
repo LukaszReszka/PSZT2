@@ -50,6 +50,8 @@ void DataSet::loadData (std::vector<std::vector<shared_p>> &set_data)
                 attributeVales[i].push_back(shared_p(set_data[i][j]));
         }
     }
+    ALCOHOL_CONSUMP_ATTR = data.size()-1;
+    setEntropy = calculateEntropy(data[ALCOHOL_CONSUMP_ATTR]);
 }
 
 double DataSet::calculateEntropy (std::vector<shared_p> &alcohol_consum_tab)
@@ -103,25 +105,29 @@ int DataSet::maxInfGainAttribute(void)
 }
 
 
-DataSet* DataSet::getSubSets(int attr_index)
+void DataSet::getSubSets(int attr_index, std::vector<DataSet> &subsets)
 {
     int subsets_numb = attributeVales[attr_index].size();
-    DataSet subsets [subsets_numb];
+    subsets.resize(subsets_numb);
     std::vector<std::vector<std::vector <shared_p>>> subsets_data;
     subsets_data.resize(subsets_numb);
     for (int s = 0; s < subsets_numb; ++s)
-        subsets_data[s].resize(data.size());
+        subsets_data[s].resize(data.size()-1);
 
     for (int record_index = 0; record_index < data[attr_index].size(); ++record_index)
         for (int subset_index = 0; subset_index < subsets_numb; ++subset_index)
            if(*data[attr_index][record_index] == *attributeVales[attr_index][subset_index])
             {
+                int subset_rec_attr_index = 0;
                 for (int record_attr_index = 0;  record_attr_index < data.size(); ++record_attr_index)
-                    subsets_data[subset_index][record_attr_index].push_back(shared_p(data[record_attr_index][record_index]));
+                {
+                    subsets_data[subset_index][subset_rec_attr_index].push_back(shared_p(data[record_attr_index][record_index]));
+                    if (record_attr_index == attr_index) record_attr_index++;   //excluding one attribute
+                    subset_rec_attr_index++;
+                }
                 break;
             }
 
     for (int i = 0; i < subsets_numb; ++i)
         subsets[i].loadData(subsets_data[i]);
-    return subsets;
 }
