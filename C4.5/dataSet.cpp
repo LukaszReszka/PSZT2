@@ -4,6 +4,8 @@
 #include <algorithm>
 #include <cmath>
 
+std::vector<int> DataSet::InitialAttrIndex;
+
 void DataSet::loadData(std::string file_name)
 {
     std::fstream file;
@@ -32,6 +34,8 @@ void DataSet::loadData(std::string file_name)
     file.close();
     ALCOHOL_CONSUMP_ATTR = data.size()-1;
     setEntropy = calculateEntropy(data[ALCOHOL_CONSUMP_ATTR]);
+    for(int i = 0; i < ALCOHOL_CONSUMP_ATTR; ++i)
+        InitialAttrIndex.push_back(i);
 }
 
 void DataSet::loadData (std::vector<std::vector<shared_p>> &set_data)
@@ -130,4 +134,16 @@ void DataSet::getSubSets(int attr_index, std::vector<DataSet> &subsets)
 
     for (int i = 0; i < subsets_numb; ++i)
         subsets[i].loadData(subsets_data[i]);
+}
+
+int DataSet::getRealIndex(int current_index)
+{
+    int wyn = InitialAttrIndex[current_index];
+    InitialAttrIndex.erase(InitialAttrIndex.begin()+current_index);
+    return wyn;
+}
+
+void DataSet::restoreRealIndex(int position, int index_value)
+{
+    InitialAttrIndex.insert(InitialAttrIndex.begin()+position, index_value);
 }

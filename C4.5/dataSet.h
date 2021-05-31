@@ -19,8 +19,11 @@ public:
     void loadData (std::vector<std::vector<shared_p>> &set_data);
     int maxInfGainAttribute(void);
     void getSubSets(int attr_index, std::vector<DataSet> &subsets);
+    int getRealIndex(int current_index);
+    void restoreRealIndex(int position, int index_value);
 
 private:
+    static std::vector<int> InitialAttrIndex;
     std::vector<std::vector <shared_p>> data;
     std::vector<std::vector <shared_p>> attributeVales;
     double setEntropy = 0.0;
@@ -29,4 +32,5 @@ private:
     double calculateEntropy (std::vector<shared_p> &alcohol_consum_tab);
     double calculateInfGain(int attr_index);
 };
+
 #endif // DATASET_H_INCLUDED
