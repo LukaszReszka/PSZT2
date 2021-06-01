@@ -33,9 +33,12 @@
 			<Add option="-std=c++11" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="C4_5Algorithm.h" />
+		<Unit filename="c4_5Algorithm.cpp" />
 		<Unit filename="dataSet.cpp" />
 		<Unit filename="dataSet.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="treeNode.h" />
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>

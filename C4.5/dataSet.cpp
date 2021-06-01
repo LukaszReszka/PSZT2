@@ -3,6 +3,8 @@
 #include <sstream>
 #include <algorithm>
 #include <cmath>
+#include <chrono>
+#include <random>
 
 std::vector<int> DataSet::InitialAttrIndex;
 
@@ -25,7 +27,7 @@ void DataSet::loadData(std::string file_name)
             auto it = std::find_if(attributeVales[attr_numb].begin(), attributeVales[attr_numb].end(), [&](shared_p const& p)
             {return *p == value;});     //lambda expression
             if(it == attributeVales[attr_numb].end())
-                attributeVales[attr_numb].push_back(shared_p(new std::string (value)));
+                attributeVales[attr_numb].push_back(shared_p(std::make_shared<std::string>(value)));
 
             attr_numb = (attr_numb+1)%N_ATTRIBUTES;
         }
@@ -146,4 +148,50 @@ int DataSet::getRealIndex(int current_index)
 void DataSet::restoreRealIndex(int position, int index_value)
 {
     InitialAttrIndex.insert(InitialAttrIndex.begin()+position, index_value);
+}
+
+void DataSet::getAttributeValues (int attr_index, std::vector<shared_p> &val)
+{
+    val.assign(attributeVales[attr_index].begin(), attributeVales[attr_index].end());
+}
+
+bool DataSet::areAllYSame (shared_p &value)
+{
+    if (attributeVales[ALCOHOL_CONSUMP_ATTR].size() == 1)
+    {
+        value = data[ALCOHOL_CONSUMP_ATTR][0];
+        return true;
+    }
+    return false;
+}
+
+bool DataSet::lackOfXiAttributes (shared_p &value)
+{
+    if (data.size() != 1) return false;
+
+    std::vector<int> values_appearances;
+    values_appearances.resize(attributeVales[0].size());
+    for (int i = 0; i < attributeVales[0].size(); ++i)
+    {
+        values_appearances[i] = std::count_if(data[0].begin(), data[0].end(),
+        [&](shared_p const& p){return *p == *attributeVales[0][i];});  //lambda expression
+    }
+    int max_appearance = *std::max_element(values_appearances.begin(), values_appearances.end());
+    std::vector<shared_p> possible_outcomes;
+    for (int j = 0; j < values_appearances.size(); ++j)
+        if (max_appearance == values_appearances[j])
+            possible_outcomes.push_back(attributeVales[0][j]);
+
+    if (possible_outcomes.size() > 1)   //randomly choosing one of the most frequent class
+    {
+        int upper_limit = possible_outcomes.size()-1;
+        unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+        std::default_random_engine generator (seed);
+        std::uniform_int_distribution<int> distribution (0, upper_limit);
+        int chosen_value = distribution(generator);
+        value = possible_outcomes[chosen_value];
+    }
+    else
+        value = possible_outcomes[0];
+    return true;
 }

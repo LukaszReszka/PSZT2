@@ -1,18 +1,31 @@
 # depslib dependency file v1.0
-1622490991 source:/home/lukasz/Pulpit/PSZT-projekt2/PSZT2/C4.5/main.cpp
+1622583901 source:/home/lukasz/Pulpit/PSZT-projekt2/PSZT2/C4.5/main.cpp
 	<iostream>
-	"dataSet.h"
-	<cmath>
+	"C4_5Algorithm.h"
 
-1622498530 /home/lukasz/Pulpit/PSZT-projekt2/PSZT2/C4.5/dataSet.h
+1622577941 /home/lukasz/Pulpit/PSZT-projekt2/PSZT2/C4.5/dataSet.h
 	<vector>
 	<string>
 	<memory>
 
-1622498588 source:/home/lukasz/Pulpit/PSZT-projekt2/PSZT2/C4.5/dataSet.cpp
+1622582616 source:/home/lukasz/Pulpit/PSZT-projekt2/PSZT2/C4.5/dataSet.cpp
 	"dataSet.h"
 	<fstream>
 	<sstream>
 	<algorithm>
 	<cmath>
+	<chrono>
+	<random>
+
+1622583579 /home/lukasz/Pulpit/PSZT-projekt2/PSZT2/C4.5/treeNode.h
+	<memory>
+	<vector>
+
+1622582722 /home/lukasz/Pulpit/PSZT-projekt2/PSZT2/C4.5/C4_5Algorithm.h
+	"treeNode.h"
+	"dataSet.h"
+
+1622583934 source:/home/lukasz/Pulpit/PSZT-projekt2/PSZT2/C4.5/c4_5Algorithm.cpp
+	"C4_5Algorithm.h"
+	<iostream>
 

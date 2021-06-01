@@ -21,6 +21,10 @@ public:
     void getSubSets(int attr_index, std::vector<DataSet> &subsets);
     int getRealIndex(int current_index);
     void restoreRealIndex(int position, int index_value);
+    void getAttributeValues (int attr_index, std::vector<shared_p> &val);
+    bool areAllYSame (shared_p &value);
+    bool lackOfXiAttributes (shared_p &value);
+
 
 private:
     static std::vector<int> InitialAttrIndex;
