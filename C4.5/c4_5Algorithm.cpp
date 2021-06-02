@@ -3,9 +3,9 @@
 void C4_5Algorithm::runAlgorithm(std::string file_name)
 {
     DataSet set_data(file_name);
-    shared_p root = std::make_shared<TreeNode>(std::make_shared<std::string>("-1"));
+    root = std::make_shared<TreeNode>(std::make_shared<std::string>("-1"));
     ID3(set_data, root);
-    //ciąg dalszy nastąpi...
+
 }
 
 void C4_5Algorithm::ID3(DataSet &subset, shared_p node)

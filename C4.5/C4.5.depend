@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1622583901 source:/home/lukasz/Pulpit/PSZT-projekt2/PSZT2/C4.5/main.cpp
+1622647153 source:/home/lukasz/Pulpit/PSZT-projekt2/PSZT2/C4.5/main.cpp
 	<iostream>
 	"C4_5Algorithm.h"
 
@@ -17,15 +17,15 @@
 	<chrono>
 	<random>
 
-1622583579 /home/lukasz/Pulpit/PSZT-projekt2/PSZT2/C4.5/treeNode.h
+1622651446 /home/lukasz/Pulpit/PSZT-projekt2/PSZT2/C4.5/treeNode.h
 	<memory>
 	<vector>
+	<unordered_map>
 
-1622582722 /home/lukasz/Pulpit/PSZT-projekt2/PSZT2/C4.5/C4_5Algorithm.h
+1622643066 /home/lukasz/Pulpit/PSZT-projekt2/PSZT2/C4.5/C4_5Algorithm.h
 	"treeNode.h"
 	"dataSet.h"
 
-1622583934 source:/home/lukasz/Pulpit/PSZT-projekt2/PSZT2/C4.5/c4_5Algorithm.cpp
+1622643035 source:/home/lukasz/Pulpit/PSZT-projekt2/PSZT2/C4.5/c4_5Algorithm.cpp
 	"C4_5Algorithm.h"
-	<iostream>
 

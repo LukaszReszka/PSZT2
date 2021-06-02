@@ -13,7 +13,8 @@ class C4_5Algorithm
 public:
     void runAlgorithm(std::string file_name);
 
-private:
+//private:
+    shared_p root;
     void ID3(DataSet &subset, shared_p node);
 };
 
