@@ -20,8 +20,8 @@ void wypisz(shared_ptr<TreeNode> &node, int m = 0)
 int main()
 {
     C4_5Algorithm alg;
-    alg.runAlgorithm("student-mat-train.csv");
+    alg.runAlgorithm("student-mat-train.csv", "student-mat-prune.csv");
     shared_ptr<TreeNode> actual = alg.root;
-    wypisz(actual);
+//    wypisz(actual);
     return 0;
 }

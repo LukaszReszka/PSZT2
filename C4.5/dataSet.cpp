@@ -23,11 +23,11 @@ void DataSet::loadData(std::string file_name)
         std::stringstream row(temp);
         while (getline(row, value, ','))
         {
-            data[attr_numb].push_back(shared_p(new std::string (value)));
+            data[attr_numb].push_back(std::make_shared<std::string>(value));
             auto it = std::find_if(attributeVales[attr_numb].begin(), attributeVales[attr_numb].end(), [&](shared_p const& p)
             {return *p == value;});     //lambda expression
             if(it == attributeVales[attr_numb].end())
-                attributeVales[attr_numb].push_back(shared_p(std::make_shared<std::string>(value)));
+                attributeVales[attr_numb].push_back(std::make_shared<std::string>(value));
 
             attr_numb = (attr_numb+1)%N_ATTRIBUTES;
         }
@@ -49,11 +49,11 @@ void DataSet::loadData (std::vector<std::vector<shared_p>> &set_data)
     {
         for(int j = 0; j < set_data[i].size(); ++j)
         {
-            data[i].push_back(shared_p(set_data[i][j]));
+            data[i].push_back(set_data[i][j]);
             auto it = std::find_if(attributeVales[i].begin(), attributeVales[i].end(), [&](shared_p const& p)
             {return *p == *set_data[i][j];});     //lambda expression
             if(it == attributeVales[i].end())
-                attributeVales[i].push_back(shared_p(set_data[i][j]));
+                attributeVales[i].push_back(set_data[i][j]);
         }
     }
     ALCOHOL_CONSUMP_ATTR = data.size()-1;
@@ -85,7 +85,7 @@ double DataSet::calculateInfGain(int attr_index)
         for (int j = 0; j < subsets_numb; ++j)
             if(*data[attr_index][i] == *attributeVales[attr_index][j])
             {
-                subsets_alco_consum[j].push_back(shared_p(data[ALCOHOL_CONSUMP_ATTR][i]));
+                subsets_alco_consum[j].push_back(data[ALCOHOL_CONSUMP_ATTR][i]);
                 break;
             }
     double result = setEntropy;
@@ -127,7 +127,7 @@ void DataSet::getSubSets(int attr_index, std::vector<DataSet> &subsets)
                 int subset_rec_attr_index = 0;
                 for (int record_attr_index = 0;  record_attr_index < data.size(); ++record_attr_index)
                 {
-                    subsets_data[subset_index][subset_rec_attr_index].push_back(shared_p(data[record_attr_index][record_index]));
+                    subsets_data[subset_index][subset_rec_attr_index].push_back(data[record_attr_index][record_index]);
                     if (record_attr_index == attr_index) record_attr_index++;   //excluding one attribute
                     subset_rec_attr_index++;
                 }
@@ -193,5 +193,15 @@ bool DataSet::lackOfXiAttributes (shared_p &value)
     }
     else
         value = possible_outcomes[0];
+    return true;
+}
+
+bool DataSet::getRecord(int index, std::vector<shared_p> &record)
+{
+    if (index > data[0].size()-1 || index < 0) return false;
+
+    record.clear();
+    for (int i = 0; i < data.size(); ++i)
+        record.push_back(data[i][index]);
     return true;
 }

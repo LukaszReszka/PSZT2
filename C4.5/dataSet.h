@@ -24,6 +24,7 @@ public:
     void getAttributeValues (int attr_index, std::vector<shared_p> &val);
     bool areAllYSame (shared_p &value);
     bool lackOfXiAttributes (shared_p &value);
+    bool getRecord(int index, std::vector<shared_p> &record);
 
 
 private:
