@@ -21,7 +21,6 @@ int main()
 {
     C4_5Algorithm alg;
     alg.runAlgorithm("student-mat-train.csv", "student-mat-prune.csv");
-    shared_ptr<TreeNode> actual = alg.root;
-//    wypisz(actual);
+    wypisz(alg.root);
     return 0;
 }
