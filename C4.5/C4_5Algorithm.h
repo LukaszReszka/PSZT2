@@ -3,6 +3,7 @@
 
 #include <cstdlib>
 #include <cctype>
+#include <iostream>
 
 #include "treeNode.h"
 #include "dataSet.h"
@@ -18,12 +19,15 @@ class C4_5Algorithm
 
 public:
     void runAlgorithm(std::string training_set_file, std::string pruning_set_file);
+    std::string predictAlcoholConsum(std::vector<shared_p_s> &record);
+    void showTree(void);
 
-//private:
+private:
     shared_p root;
     void ID3(DataSet &subset, shared_p node);
     void predictOnPruningSet(DataSet &subset, shared_p root);
     void pruneTree (shared_p node);
+    void showTree (shared_p &node, int m);
 };
 
 #endif // C4_5ALGORITHM_H_INCLUDED

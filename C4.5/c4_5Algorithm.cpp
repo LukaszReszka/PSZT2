@@ -5,9 +5,9 @@ void C4_5Algorithm::runAlgorithm(std::string training_set_file, std::string prun
     DataSet training_set(training_set_file);
     root = std::make_shared<TreeNode>(std::make_shared<std::string>("-1"));
     ID3(training_set, root);
-    DataSet pruning_set(pruning_set_file);
-    predictOnPruningSet(pruning_set, root);
-    pruneTree(root);
+//    DataSet pruning_set(pruning_set_file);
+//    predictOnPruningSet(pruning_set, root);
+//    pruneTree(root);
 }
 
 void C4_5Algorithm::ID3(DataSet &subset, shared_p node)
@@ -86,7 +86,7 @@ void C4_5Algorithm::predictOnPruningSet(DataSet &subset, shared_p root)
 }
 
 void C4_5Algorithm::pruneTree (shared_p node)
-{
+{   //predicting error rates, using formula: (total_errors+0.5*leaf_numbers)/total_predicton_number
     if (node->chosen_attr_id == LEAF_ID) return;
 
     for (auto child: node->children)
@@ -96,7 +96,6 @@ void C4_5Algorithm::pruneTree (shared_p node)
         if(c->chosen_attr_id != LEAF_ID)
             return;
 
-    umap collective_statistics;                     //predicting error rates, using formula: (total_errors+0.5*leaf_numbers)/total_predicton_number
     umap classes_in_subtree;
     int current_good_predictions = 0;
     int total_predictions = 0;
@@ -106,11 +105,6 @@ void C4_5Algorithm::pruneTree (shared_p node)
         shared_p_s predicted_class = n->attr_values[0];
         for (auto m: n->data_for_pruning)
         {
-            auto res = collective_statistics.find(m.first);
-            if (res == collective_statistics.end())
-                    collective_statistics[m.first] = m.second;
-                else
-                    collective_statistics[m.first] += m.second;
             total_predictions += m.second;
             if(*predicted_class == *m.first)
                 current_good_predictions += m.second;
@@ -136,7 +130,7 @@ void C4_5Algorithm::pruneTree (shared_p node)
     for(auto c: classes_in_subtree)
         if(c.second == f->second)
         {
-            double error_rate = (double) (total_predictions - collective_statistics[c.first] + 0.5)/total_predictions;
+            double error_rate = (double) (total_predictions - node->data_for_pruning[c.first] + 0.5)/total_predictions;
             if (prune_e_r == -1.0 || error_rate < prune_e_r)
             {
                 prune_e_r = error_rate;
@@ -147,6 +141,60 @@ void C4_5Algorithm::pruneTree (shared_p node)
     if(prune_e_r < current_e_r)         //pruning tree
     {
         node->chosen_attr_id = LEAF_ID;
-
+        node->children.clear();
+        node->attr_values.clear();
+        node->attr_values.push_back(chosen_class);
     }
+}
+
+void C4_5Algorithm::showTree (shared_p &node, int m)
+{
+    for (int j = 0; j < m; ++j)
+        std::cout << "=";
+    std::cout<<node->chosen_attr_id << std::endl;
+    if (node->chosen_attr_id == -1) return;
+    int new_m = ++m;
+    for (int i = 0; i< node->children.size(); ++i)
+            showTree(node->children[i], new_m);
+}
+
+void C4_5Algorithm::showTree (void)
+{
+   showTree(root, 0);
+}
+
+std::string C4_5Algorithm::predictAlcoholConsum(std::vector<shared_p_s> &record)
+{
+    shared_p current_node = root;
+    while (current_node->chosen_attr_id != LEAF_ID)
+    {
+        int index;                                                           //choosing to which node proceed next
+        for (index = 0; index < current_node->attr_values.size(); ++index)
+            if(*current_node->attr_values[index] == *record[current_node->chosen_attr_id])
+                break;
+
+        if (index == current_node->attr_values.size())                  //if value of one of record's attributes doesn't match with any values of that attributed stored in tree
+        {
+            if(!isdigit((*record[current_node->chosen_attr_id])[0]))
+                index = 0;
+            else
+            {
+                int record_val = atoi((*record[current_node->chosen_attr_id]).c_str());
+                int best_difference = 100;
+                for (int j = 0; j<current_node->attr_values.size(); ++j)
+                {
+                    int current_value = atoi((*current_node->attr_values[j]).c_str());
+                    int current_difference = abs(current_value - record_val);
+                    if (current_difference < best_difference)
+                    {
+                        index = j;
+                        best_difference = current_difference;
+                    }
+                }
+            }
+        }
+
+        current_node = current_node->children[index];           //proceeding to another node
+    }
+    return *current_node->attr_values[0];
 }
