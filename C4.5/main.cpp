@@ -10,7 +10,7 @@ int main()
     vector<shared_ptr<string>> record;
     DataSet data("student-mat-train.csv");
     data.getRecord(2, record);
-    std::cout<<*record[31] << endl;
+    cout<<*record[31] << endl;
     cout << alg.predictAlcoholConsum(record);
 
 //    alg.showTree();

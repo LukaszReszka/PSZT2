@@ -5,14 +5,14 @@ void C4_5Algorithm::runAlgorithm(std::string training_set_file, std::string prun
     DataSet training_set(training_set_file);
     root = std::make_shared<TreeNode>(std::make_shared<std::string>("-1"));
     ID3(training_set, root);
-//    DataSet pruning_set(pruning_set_file);
-//    predictOnPruningSet(pruning_set, root);
-//    pruneTree(root);
+    DataSet pruning_set(pruning_set_file);
+    predictOnPruningSet(pruning_set, root);
+    pruneTree(root);
 }
 
 void C4_5Algorithm::ID3(DataSet &subset, shared_p node)
 {
-    std::shared_ptr<std::string> alco_consum_level;
+    shared_p_s alco_consum_level;
     if (subset.areAllYSame(alco_consum_level) || subset.lackOfXiAttributes(alco_consum_level))
     {
         node->chosen_attr_id = LEAF_ID;
@@ -138,7 +138,7 @@ void C4_5Algorithm::pruneTree (shared_p node)
             }
         }
 
-    if(prune_e_r < current_e_r)         //pruning tree
+    if(prune_e_r <= current_e_r)         //pruning tree
     {
         node->chosen_attr_id = LEAF_ID;
         node->children.clear();
@@ -168,7 +168,7 @@ std::string C4_5Algorithm::predictAlcoholConsum(std::vector<shared_p_s> &record)
     shared_p current_node = root;
     while (current_node->chosen_attr_id != LEAF_ID)
     {
-        int index;                                                           //choosing to which node proceed next
+        int index = 0;                                                           //choosing to which node proceed next
         for (index = 0; index < current_node->attr_values.size(); ++index)
             if(*current_node->attr_values[index] == *record[current_node->chosen_attr_id])
                 break;

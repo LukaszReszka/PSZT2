@@ -127,8 +127,8 @@ void DataSet::getSubSets(int attr_index, std::vector<DataSet> &subsets)
                 int subset_rec_attr_index = 0;
                 for (int record_attr_index = 0;  record_attr_index < data.size(); ++record_attr_index)
                 {
-                    subsets_data[subset_index][subset_rec_attr_index].push_back(data[record_attr_index][record_index]);
                     if (record_attr_index == attr_index) record_attr_index++;   //excluding one attribute
+                    subsets_data[subset_index][subset_rec_attr_index].push_back(data[record_attr_index][record_index]);
                     subset_rec_attr_index++;
                 }
                 break;
@@ -167,7 +167,7 @@ bool DataSet::areAllYSame (shared_p &value)
 
 bool DataSet::lackOfXiAttributes (shared_p &value)
 {
-    if (data.size() != 1) return false;
+    if (data.size() > 1) return false;
 
     std::vector<int> values_appearances;
     values_appearances.resize(attributeVales[0].size());
